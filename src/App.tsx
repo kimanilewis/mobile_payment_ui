@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import './App.css';
-import Config from './Config';
+import config from './config';
 
-const API_BASE_URL = Config.API_BASE_URL; // Replace with your API base URL
+const API_BASE_URL = config.API_BASE_URL;
 
 const App: React.FC = () => {
   const [mobileNumber, setMobileNumber] = useState('');
   const [amount, setAmount] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleMobileNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMobileNumber(e.target.value);
@@ -17,6 +20,10 @@ const App: React.FC = () => {
   };
 
   const handlePayment = async () => {
+    setLoading(true);
+    setSuccessMessage('');
+    setErrorMessage('');
+
     try {
       const response = await fetch(`${API_BASE_URL}/payment`, {
         method: 'POST',
@@ -30,21 +37,20 @@ const App: React.FC = () => {
       });
 
       if (response.ok) {
-        // Payment successful logic
-        console.log('Payment successful!');
+        setSuccessMessage('Payment successful!');
       } else {
-        // Handle payment failure
-        console.error('Payment failed');
+        setErrorMessage('Payment failed. Please try again.');
       }
     } catch (error) {
-      // Handle network error
-      console.error('Error:', error);
+      setErrorMessage('Network error occurred. Please try again later.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="App">
-      <h1>Mobile Payment App</h1>
+      <h1>Safari Payment App</h1>
       <div>
         <label>Mobile Number:</label>
         <input type="text" value={mobileNumber} onChange={handleMobileNumberChange} />
@@ -54,9 +60,12 @@ const App: React.FC = () => {
         <input type="text" value={amount} onChange={handleAmountChange} />
       </div>
       <button onClick={handlePayment}>Pay</button>
+
+      {loading && <div className="message">Processing payment...</div>}
+      {successMessage && <div className="message success">{successMessage}</div>}
+      {errorMessage && <div className="message error">{errorMessage}</div>}
     </div>
   );
 };
 
 export default App;
-
