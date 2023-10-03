@@ -3,7 +3,8 @@ import './App.css';
 import config from './config';
 import { Buffer } from 'buffer'
 
-const API_BASE_URL = config.API_BASE_URL;
+//const API_BASE_URL = config.API_BASE_URL;
+const API_BASE_URL = "http://localhost:9001"
 
 const App: React.FC = () => {
   const [mobileNumber, setMobileNumber] = useState('');
@@ -72,13 +73,9 @@ const App: React.FC = () => {
 
     console.log(payload);
     try {
-      const response = await fetch(`${API_BASE_URL}/processrequest`, 
+      const response = await fetch(`${API_BASE_URL}`, 
       {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer Xi385RA3ncqPMzatTYwUGHV7OpZE`, // Add your Bearer token here
-        },
         body: JSON.stringify(payload),
       });
  
