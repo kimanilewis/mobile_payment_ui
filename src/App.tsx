@@ -12,7 +12,7 @@ const App: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleMobileNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMobileNumber(e.target.value);
+    setMobileNumber(e.target.value); 
   };
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +42,7 @@ const App: React.FC = () => {
         setErrorMessage('Payment failed. Please try again.');
       }
     } catch (error) {
-      setErrorMessage('Network error occurred. Please try again later.');
+      setErrorMessage('Please complete MPESA payment(KES ' + amount + ') sent on your phone. ' +  mobileNumber);
     } finally {
       setLoading(false);
     }
